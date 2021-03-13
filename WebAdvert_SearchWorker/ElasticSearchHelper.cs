@@ -11,8 +11,12 @@ namespace WedbAdvert_SearchWorker
         {
             if (_client == null)
             {
-                var url = Environment.GetEnvironmentVariable("ES_URL"); ;
+                string url = Environment.GetEnvironmentVariable("ES_URL");
+                string userName = Environment.GetEnvironmentVariable("USER_NAME");
+                string password = Environment.GetEnvironmentVariable("PASSWORD");
+
                 var settings = new ConnectionSettings(new Uri(url))
+                    .BasicAuthentication(userName, password)
                     .DefaultIndex("adverts")
                     .DefaultMappingFor<AdvertType>(d => d.IndexName("advert"))
                     .DefaultMappingFor<AdvertType>(m => m.IdProperty(x => x.Id));

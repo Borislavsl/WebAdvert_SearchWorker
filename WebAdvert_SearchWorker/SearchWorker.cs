@@ -30,7 +30,11 @@ namespace WedbAdvert_SearchWorker
                 AdvertConfirmedMessage message = JsonConvert.DeserializeObject<AdvertConfirmedMessage>(record.Sns.Message);
                 AdvertType advertDocument = MappingHelper.Map(message);
 
-                await _client.IndexDocumentAsync(advertDocument);
+                IndexResponse response = await _client.IndexDocumentAsync(advertDocument);
+
+                context.Logger.LogLine("Result is " + response.Result.ToString());
+                context.Logger.LogLine("Exception: " + response.OriginalException?.Message);
+                context.Logger.LogLine("Server error: " + response.ServerError);
             }
         }
     }
